@@ -7,6 +7,7 @@ import com.trishna.library.models.Book;
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.models.Student;
 import com.trishna.library.models.Transaction;
+import com.trishna.library.repositories.StudentCacheRepository;
 import com.trishna.library.repositories.StudentRepository;
 import com.trishna.library.repositories.TransactionRepository;
 import com.trishna.library.utils.Constants;
@@ -21,6 +22,8 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
     @Autowired
+    StudentCacheRepository studentCacheRepository;
+    @Autowired
     UserService userService;
     @Autowired
     TransactionRepository transactionRepository;
@@ -34,8 +37,13 @@ public class StudentService {
     }
 
     public GetStudentResponse find(Integer studentId) {
-        Student student = studentRepository.findById(studentId).orElse(null);
-        return student.to();
+        GetStudentResponse student = studentCacheRepository.get(studentId);
+        if(student != null)
+            return student;
+        student = studentRepository.findById(studentId).orElse(null).to();
+        if(student != null)
+            studentCacheRepository.set(student);
+        return student;
     }
 
     public Student findStudent(int studentId) {
@@ -74,6 +82,7 @@ public class StudentService {
                     throw new Exception("Invalid update key");
             }
             studentRepository.save(retrievdStudent);
+            studentCacheRepository.getSet(retrievdStudent.getId(), retrievdStudent.to());
         }
         else throw new Exception("Student Not found");
     }
@@ -81,11 +90,13 @@ public class StudentService {
     public void deleteStudent(Integer studentId) throws Exception {
         Student retrievedStudent = studentRepository.findById(studentId).orElse(null);
         if(retrievedStudent != null && retrievedStudent.getBookList().size() == 0){
+            studentCacheRepository.delete(studentId);
             List<Transaction> transactionList = transactionRepository.findByStudent(retrievedStudent);
             for (Transaction txn: transactionList) {
                 transactionRepository.deleteById(txn.getId());
             }
             studentRepository.deleteById(studentId);
+
             userService.deleteById(retrievedStudent.getSecuredUser().getId());
 
         }
