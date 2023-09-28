@@ -134,6 +134,10 @@ public class TransactionService {
             throw new Exception("Invalid request");
         }
 
+        Transaction txn = transactionRepository.findTopByStudentAndBookAndTransactionTypeOrderByIdDesc(student, book, TransactionType.RETURN);
+        if(txn!= null && txn.getTransactionStatus().equals(TransactionStatus.PENDING))
+            return txn.getTxnId();
+
         Transaction transaction = null;
         try {
             Integer fine = calculateFine(issuanceTxn.getCreatedOn());
