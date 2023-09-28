@@ -40,7 +40,9 @@ public class StudentService {
         GetStudentResponse student = studentCacheRepository.get(studentId);
         if(student != null)
             return student;
-        student = studentRepository.findById(studentId).orElse(null).to();
+        Student obj = studentRepository.findById(studentId).orElse(null);
+        if(obj != null)
+            student = obj.to();
         if(student != null)
             studentCacheRepository.set(student);
         return student;

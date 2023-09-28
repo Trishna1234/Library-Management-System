@@ -1,10 +1,13 @@
 package com.trishna.library.utils;
 
+import lombok.AllArgsConstructor;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 public class Utils {
 
     public static Map<String, String> getAuthoritiesForUser(){
@@ -13,7 +16,8 @@ public class Utils {
                 Arrays.asList(
                         Constants.STUDENT_SELF_INFO_AUTHORITY,
                         Constants.READ_BOOK_AUTHORITY,
-                        Constants.MAKE_PAYMENT_AUTHORITY
+                        Constants.MAKE_PAYMENT_AUTHORITY,
+                        Constants.SHOW_FINE_AUTHORITY
                 );
 
 
@@ -25,7 +29,8 @@ public class Utils {
                         Constants.INITIATE_TRANSACTION_AUTHORITY,
                         Constants.READ_BOOK_AUTHORITY,
                         Constants.UPDATE_BOOK_AUTHORITY,
-                        Constants.UPDATE_BOOK_AUTHORITY
+                        Constants.UPDATE_BOOK_AUTHORITY,
+                        Constants.SHOW_FINE_AUTHORITY
                 );
 
         String studentAuthoritiesAsString = String.join(Constants.DELIMITER, studentAuthorities);

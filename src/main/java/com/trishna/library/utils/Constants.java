@@ -19,6 +19,7 @@ public class Constants {
 
     // Accessible by both admins & students
     public static final String READ_BOOK_AUTHORITY = "READ_BOOK";
+    public static final String SHOW_FINE_AUTHORITY = "SHOW_FINE";
 
 
 

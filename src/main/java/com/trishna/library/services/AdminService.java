@@ -31,7 +31,9 @@ public class AdminService {
 
     public GetAdminResponse view(Integer adminId){
         Admin admin = adminRepository.findById(adminId).orElse(null);
-        return admin.to();
+        if(admin != null)
+            return admin.to();
+        return null;
     }
 
     public void updateDetails(int adminId, UpdateRequest request) throws Exception {

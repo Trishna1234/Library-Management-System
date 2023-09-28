@@ -19,11 +19,11 @@ public class StudentCacheRepository {
 
 
     public void delete(Integer studentId){
-        Object object = redisTemplate.opsForValue().getAndDelete(getKey(studentId));
+        redisTemplate.opsForValue().getAndDelete(getKey(studentId));
     }
 
     public void getSet(Integer studentId, GetStudentResponse student){
-        Object object = redisTemplate.opsForValue().getAndSet(getKey(studentId), student);
+        redisTemplate.opsForValue().getAndSet(getKey(studentId), student);
     }
     public void set(GetStudentResponse student){
         redisTemplate.opsForValue().set(getKey(student.getId()), student);

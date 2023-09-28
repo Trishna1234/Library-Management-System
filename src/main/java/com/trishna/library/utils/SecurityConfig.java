@@ -17,10 +17,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userService);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+//        auth.userDetailsService(userService);
+//    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception{
@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/delete/book-by-id/**").hasAuthority(Constants.DELETE_BOOK_AUTHORITY)
                 .antMatchers(HttpMethod.POST, "transaction/**").hasAuthority(Constants.INITIATE_TRANSACTION_AUTHORITY)
                 .antMatchers(HttpMethod.POST, "/transaction/payment/**").hasAuthority(Constants.MAKE_PAYMENT_AUTHORITY)
+                .antMatchers(HttpMethod.GET, "/transaction/showFine/**").hasAuthority(Constants.SHOW_FINE_AUTHORITY)
                 .antMatchers("student/create/**").permitAll()
                 .and()
                 .formLogin();

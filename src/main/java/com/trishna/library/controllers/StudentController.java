@@ -32,8 +32,7 @@ public class StudentController {
     // Only for Admin so that they can see any student's details
     @GetMapping("/student-by-id/{id}")
     public GetStudentResponse findStudentById(@PathVariable("id") Integer studentId) throws Exception {
-        boolean isCalledByAdmin = isAdmin();
-        if(isCalledByAdmin){
+        if(isAdmin()){
             return studentService.find(studentId);
         }
         throw new Exception("User is not authorized");
@@ -42,8 +41,7 @@ public class StudentController {
 //    Admin view Student's issued books by ID
     @GetMapping("/student-by-id/book/{id}")
     public List<GetBookResponse> findStudentBooksById(@PathVariable("id") Integer studentId) throws Exception{
-        boolean isCalledByAdmin = isAdmin();
-        if(isCalledByAdmin){
+        if(isAdmin()){
             return studentService.getMyBooks(studentId);
         }
         throw new Exception("User is not authorized");
@@ -68,16 +66,16 @@ public class StudentController {
     }
 
 //    Checks whether user is an admin
-    private boolean isAdmin() throws Exception {
+    private boolean isAdmin(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         SecuredUser securedUser = (SecuredUser) authentication.getPrincipal();
         boolean isCalledByAdmin = false;
         for(GrantedAuthority grantedAuthority : securedUser.getAuthorities()){
             String[] authorities = grantedAuthority.getAuthority().split(Constants.DELIMITER);
             isCalledByAdmin = Arrays.stream(authorities).anyMatch(x -> Constants.STUDENT_INFO_AUTHORITY.equals(x));
-            return isCalledByAdmin;
+            if(isCalledByAdmin) break;
         }
-        throw new Exception("User is not authorized");
+        return isCalledByAdmin;
     }
 
 

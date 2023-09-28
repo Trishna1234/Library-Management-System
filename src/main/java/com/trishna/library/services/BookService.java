@@ -30,6 +30,10 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    public Book findById(Integer id){
+        return bookRepository.findById(id).get();
+    }
+
     public List<Book> find(String searchKey, String searchValue) throws Exception {
         switch (searchKey){
             case "id": {

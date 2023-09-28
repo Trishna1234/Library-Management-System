@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,6 +31,11 @@ public class TransactionController {
 
         return transactionService.initiateTxn(transactionRequest, adminId);
     }
+
+//    @GetMapping("/transaction/showFine")
+//    public Integer showFine(@RequestParam("transactionId") String txnId){
+//        return transactionService.showFine(txnId);
+//    }
 
     @PostMapping("/transaction/payment")
     public void makePayment(@RequestParam("amount") Integer amount,

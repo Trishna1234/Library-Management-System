@@ -37,8 +37,8 @@ public class SecuredUser implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String[] authorities = this.authorities.split(Constants.DELIMITER);
-        return Arrays.stream(authorities)
+        String[] authority_arr = this.authorities.split(Constants.DELIMITER);
+        return Arrays.stream(authority_arr)
                 .map(authority -> new SimpleGrantedAuthority(authority))
                 .collect(Collectors.toList());
     }

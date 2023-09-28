@@ -6,6 +6,8 @@ import com.trishna.library.models.*;
 import com.trishna.library.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -181,11 +183,38 @@ public class TransactionService {
         return 0;
     }
 
+    public Integer showFine(String txnId, Integer bookId){
+
+//      GETTING THE RETURN TRANSACTION
+        Transaction returnTxn = transactionRepository.findByTxnId(txnId);
+
+//      GETTING THE STUDENT WHO REQUESTED THE RETURN
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecuredUser securedUser = (SecuredUser) authentication.getPrincipal();
+        int studentId = securedUser.getStudent().getId();
+        Student student = studentService.findStudent(studentId);
+
+//      GETTING THE BOOK FOR WHICH RETURN IS REQUESTED
+        Book book = bookService.findById(bookId);
+
+//      GETTING THE ISSUE OF TRANSACTION OF THE PARTICULAR BOOK
+        Transaction issuanceTxn = transactionRepository.findTopByStudentAndBookAndTransactionTypeOrderByIdDesc(
+                student, book, TransactionType.ISSUE);
+
+//      CALCULATE THE CURRENT FINE
+        int fine = calculateFine(issuanceTxn.getCreatedOn());
+        returnTxn.setFine(fine);
+        transactionRepository.save(returnTxn);
+        return fine;
+    }
+
     public void payFine(Integer amount, Integer studentId, String txnId) throws Exception {
 
         Transaction returnTxn = transactionRepository.findByTxnId(txnId);
 
         Book book = returnTxn.getBook();
+
+        showFine(txnId, book.getId());
 
         if(returnTxn.getFine() == amount && book.getStudent() != null && book.getStudent().getId() == studentId){
             returnTxn.setTransactionStatus(TransactionStatus.SUCCESS);

@@ -8,8 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class LibraryManagementSystemProjectApplication implements CommandLineRunner {
@@ -18,8 +16,6 @@ public class LibraryManagementSystemProjectApplication implements CommandLineRun
 	AdminService adminService;
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryManagementSystemProjectApplication.class, args);
-//		List list = new ArrayList<Integer>();
-//		list.add("Hello");
 	}
 
 	@Override

@@ -21,7 +21,4 @@ public class GetBookResponse {
     private String authorName;
     private String authorEmail;
     private BookStatus status;
-//    private Integer studentId;
-//    private String studentName;
-//    private String studentEmail;
 }
