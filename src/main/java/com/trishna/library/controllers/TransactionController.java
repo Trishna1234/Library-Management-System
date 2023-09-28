@@ -32,10 +32,6 @@ public class TransactionController {
         return transactionService.initiateTxn(transactionRequest, adminId);
     }
 
-//    @GetMapping("/transaction/showFine")
-//    public Integer showFine(@RequestParam("transactionId") String txnId){
-//        return transactionService.showFine(txnId);
-//    }
 
     @PostMapping("/transaction/payment")
     public void makePayment(@RequestParam("amount") Integer amount,
