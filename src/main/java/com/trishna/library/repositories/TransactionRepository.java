@@ -17,6 +17,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     List<Transaction> findByStudent(Student student);
 
+    List<Transaction> findByBook(Book book);
+
     // S1 --> B1 (Issuance) t1
     // s1 --> b1 (return) t2
     // s1 --> b1 (issue) t3

@@ -32,4 +32,9 @@ public class BookController {
     public void updateBooks(@PathVariable Integer bookId, @RequestBody UpdateRequest request) throws Exception {
         bookService.updateBook(bookId, request);
     }
+
+    @DeleteMapping("/deleteBook/{bookId}")
+    public void deleteBook(@PathVariable Integer bookId){
+        bookService.deleteBook(bookId);
+    }
 }

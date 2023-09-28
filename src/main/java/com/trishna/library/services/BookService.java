@@ -4,6 +4,7 @@ import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.UpdateRequest;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.BookRepository;
+import com.trishna.library.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ import java.util.Optional;
 public class BookService {
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    TransactionRepository transactionRepository;
     @Autowired
     AuthorService authorService;
     public void createOrUpdate(Book book) {
@@ -31,29 +34,32 @@ public class BookService {
     }
 
     public Book findById(Integer id){
-        return bookRepository.findById(id).get();
+        Optional<Book> op = bookRepository.findById(id);
+        if(op.isPresent())
+            return op.get();
+        else return null;
     }
 
-    public List<Book> find(String searchKey, String searchValue) throws Exception {
-        switch (searchKey){
-            case "id": {
-                Optional<Book> book = bookRepository.findById(Integer.parseInt(searchValue));
-                if(book.isPresent()){
-                    return Arrays.asList(book.get());
-                }else{
-                    return new ArrayList<>();
-                }
-            }
-            case "genre":
-                return bookRepository.findByGenre(Genre.valueOf(searchValue));
-            case "author_name":
-                return bookRepository.findByAuthorName(searchValue);
-            case "book_name":
-                return bookRepository.findByName(searchValue);
-            default:
-                throw new Exception("Search key not valid " + searchKey);
-        }
-    }
+//    public List<Book> find(String searchKey, String searchValue) throws Exception {
+//        switch (searchKey){
+//            case "id": {
+//                Optional<Book> book = bookRepository.findById(Integer.parseInt(searchValue));
+//                if(book.isPresent()){
+//                    return Arrays.asList(book.get());
+//                }else{
+//                    return new ArrayList<>();
+//                }
+//            }
+//            case "genre":
+//                return bookRepository.findByGenre(Genre.valueOf(searchValue));
+//            case "author_name":
+//                return bookRepository.findByAuthorName(searchValue);
+//            case "book_name":
+//                return bookRepository.findByName(searchValue);
+//            default:
+//                throw new Exception("Search key not valid " + searchKey);
+//        }
+//    }
 
     public List<GetBookResponse> findBook(String searchKey, String searchValue) throws Exception {
         switch (searchKey){
@@ -112,5 +118,17 @@ public class BookService {
                 throw new Exception("Invalid update key");
         }
         bookRepository.save(retrievedBook);
+    }
+
+    public void deleteBook(int bookId){
+        Book book = bookRepository.findById(bookId).orElse(null);
+        if(book != null){
+            List<Transaction> list = transactionRepository.findByBook(book);
+            for (Transaction txn: list) {
+                txn.setBook(null);
+                transactionRepository.save(txn);
+            }
+        }
+        bookRepository.deleteById(bookId);
     }
 }

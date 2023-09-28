@@ -1,5 +1,6 @@
 package com.trishna.library.services;
 
+import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.GetStudentResponse;
 import com.trishna.library.dtos.InitiateTransactionRequest;
 import com.trishna.library.models.*;
@@ -62,9 +63,7 @@ public class TransactionService {
     private String issuance(InitiateTransactionRequest request, Integer adminId) throws Exception {
         Student student = studentService.findStudent(request.getStudentId());
         Admin admin = adminService.find(adminId);
-        List<Book> bookList = bookService.find("id", String.valueOf(request.getBookId()));
-
-        Book book = bookList != null && bookList.size() > 0 ? bookList.get(0) : null;
+        Book book = bookService.findById(request.getBookId());
 
         if (student == null
                 || admin == null
@@ -114,9 +113,8 @@ public class TransactionService {
 
         Student student = studentService.findStudent(request.getStudentId());
         Admin admin = adminService.find(adminId);
-        List<Book> bookList = bookService.find("id", String.valueOf(request.getBookId()));
 
-        Book book = bookList != null && bookList.size() > 0 ? bookList.get(0) : null;
+        Book book = bookService.findById(request.getBookId());
 
         if (student == null
                 || admin == null // admin is null
