@@ -2,6 +2,7 @@ package com.trishna.library.services;
 
 import com.trishna.library.dtos.GetAdminResponse;
 import com.trishna.library.dtos.UpdateRequest;
+import com.trishna.library.exceptions.GeneralException;
 import com.trishna.library.models.Admin;
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.repositories.AdminRepository;
@@ -54,6 +55,6 @@ public class AdminService {
             }
             adminRepository.save(retrievedAdmin);
         }
-        else throw new Exception("Student Not found");
+        else throw new GeneralException("Admin Not found");
     }
 }

@@ -3,6 +3,8 @@ package com.trishna.library.services;
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.GetStudentResponse;
 import com.trishna.library.dtos.UpdateRequest;
+import com.trishna.library.exceptions.GeneralException;
+import com.trishna.library.exceptions.user.UserNotFindException;
 import com.trishna.library.models.Book;
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.models.Student;
@@ -45,10 +47,13 @@ public class StudentService {
         if(student != null)
             return student;
         Student obj = studentRepository.findById(studentId).orElse(null);
-        if(obj != null)
+        if(obj != null){
             student = obj.to();
-        if(student != null)
             studentCacheRepository.set(student);
+        }
+        if(student == null){
+            throw new UserNotFindException("User Not Find");
+        }
         return student;
     }
 
@@ -85,12 +90,12 @@ public class StudentService {
                     break;
                 }
                 default:
-                    throw new Exception("Invalid update key");
+                    throw new GeneralException("Invalid update key");
             }
             studentRepository.save(retrievdStudent);
             studentCacheRepository.getSet(retrievdStudent.getId(), retrievdStudent.to());
         }
-        else throw new Exception("Student Not found");
+        else throw new UserNotFindException("Student Not found");
     }
 
     public void deleteStudent(Integer studentId) throws Exception {
@@ -107,6 +112,6 @@ public class StudentService {
 
         }
         else if(retrievedStudent != null && retrievedStudent.getBookList().size() > 0)
-            throw new Exception("Student didn't return all books");
+            throw new GeneralException("Student didn't return all books");
     }
 }

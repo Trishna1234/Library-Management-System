@@ -1,5 +1,6 @@
 package com.trishna.library.services;
 
+import com.trishna.library.exceptions.user.UserAlreadyExistsException;
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.repositories.UserRepository;
 import com.trishna.library.util.Utils;
@@ -29,6 +30,8 @@ public class UserService implements UserDetailsService {
 
         securedUser.setAuthorities(authorities);
         securedUser.setPassword(encryptedPwd);
+        if(userRepository.findByUsername(securedUser.getUsername()) != null)
+            throw new UserAlreadyExistsException("User already exists");
         return userRepository.save(securedUser);
     }
 

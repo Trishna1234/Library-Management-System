@@ -2,6 +2,7 @@ package com.trishna.library.services;
 
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.UpdateRequest;
+import com.trishna.library.exceptions.GeneralException;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.BookRepository;
 import com.trishna.library.repositories.TransactionRepository;
@@ -97,7 +98,7 @@ public class BookService {
                 return result;
             }
             default:
-                throw new Exception("Search key not valid " + searchKey);
+                throw new GeneralException("Search key not valid " + searchKey);
         }
     }
 
@@ -115,7 +116,7 @@ public class BookService {
                 break;
             }
             default:
-                throw new Exception("Invalid update key");
+                throw new GeneralException("Invalid update key");
         }
         bookRepository.save(retrievedBook);
     }

@@ -1,6 +1,9 @@
 package com.trishna.library.services;
 
 import com.trishna.library.dtos.InitiateTransactionRequest;
+import com.trishna.library.exceptions.GeneralException;
+import com.trishna.library.exceptions.transaction.LessFineException;
+import com.trishna.library.exceptions.transaction.TransactionNotFoundException;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ public class TransactionService {
     @Value("${student.allowed.duration}")
     Integer duration;
 
-    public String initiateTxn(InitiateTransactionRequest request, Integer adminId) throws Exception {
+    public TransactionResponse initiateTxn(InitiateTransactionRequest request, Integer adminId) throws Exception {
         /**
          * Issuance
          * 1. If the book is available or not and student is valid or not
@@ -51,13 +54,17 @@ public class TransactionService {
          * 3. due date check and fine calculation
          * 4. if there is no fine, then de-allocate the book from student's name ==> book table
          */
-
+//        String txnId = request.getTransactionType() == TransactionType.ISSUE
+//                ? issuance(request, adminId) :
+//                returnBook(request, adminId);
+//        TransactionResponse response = new TransactionResponse(txnId, )
         return request.getTransactionType() == TransactionType.ISSUE
                 ? issuance(request, adminId) :
                 returnBook(request, adminId);
     }
 
-    private String issuance(InitiateTransactionRequest request, Integer adminId) throws Exception {
+//    private String issuance(InitiateTransactionRequest request, Integer adminId) throws Exception {
+    private TransactionResponse issuance(InitiateTransactionRequest request, Integer adminId) throws Exception {
         Student student = studentService.findStudent(request.getStudentId());
         Admin admin = adminService.find(adminId);
         Book book = bookService.findById(request.getBookId());
@@ -65,9 +72,10 @@ public class TransactionService {
         if (student == null
                 || admin == null
                 || book == null
-                || book.getStudent() != null
                 || student.getBookList().size() >= maxBooksAllowed) {
-            throw new Exception("Invalid request");
+            throw new GeneralException("Invalid request");
+        } else if (book.getStudent() != null) {
+            throw new GeneralException("Book is not available");
         }
 
         Transaction transaction = null;
@@ -95,11 +103,14 @@ public class TransactionService {
         }finally {
             transactionRepository.save(transaction);
         }
+        TransactionResponse response = new TransactionResponse(transaction.getTxnId(), transaction.getTransactionStatus());
 
-        return transaction.getTxnId();
+//        return transaction.getTxnId();
+        return response;
     }
 
-    private String returnBook(InitiateTransactionRequest request, Integer adminId) throws Exception {
+//    private String returnBook(InitiateTransactionRequest request, Integer adminId) throws Exception {
+    private TransactionResponse returnBook(InitiateTransactionRequest request, Integer adminId) throws Exception {
         /**
          * Return
          * 1. If the book is valid or not and student is valid or not
@@ -130,8 +141,12 @@ public class TransactionService {
         }
 
         Transaction txn = transactionRepository.findTopByStudentAndBookAndTransactionTypeOrderByIdDesc(student, book, TransactionType.RETURN);
-        if(txn!= null && txn.getTransactionStatus().equals(TransactionStatus.PENDING))
-            return txn.getTxnId();
+        if(txn!= null && txn.getTransactionStatus().equals(TransactionStatus.PENDING)){
+//            return txn.getTxnId();
+            TransactionResponse response = new TransactionResponse(txn.getTxnId(), txn.getTransactionStatus());
+            return response;
+        }
+
 
         Transaction transaction = null;
         try {
@@ -159,8 +174,9 @@ public class TransactionService {
         }finally {
             transactionRepository.save(transaction);
         }
-
-        return transaction.getTxnId();
+        TransactionResponse response = new TransactionResponse(transaction.getTxnId(), transaction.getTransactionStatus());
+//        return transaction.getTxnId();
+        return response;
     }
 
     // S1 --> B1 = D1
@@ -207,9 +223,13 @@ public class TransactionService {
         return fine;
     }
 
-    public void payFine(Integer amount, Integer studentId, String txnId) throws Exception {
+    public TransactionResponse payFine(Integer amount, Integer studentId, String txnId) throws Exception {
 
         Transaction returnTxn = transactionRepository.findByTxnId(txnId);
+
+        if(returnTxn == null){
+            throw new TransactionNotFoundException("Check your transaction Id");
+        }
 
         Book book = returnTxn.getBook();
 
@@ -220,8 +240,12 @@ public class TransactionService {
             book.setStudent(null);
             bookService.createOrUpdate(book);
             transactionRepository.save(returnTxn);
-        }else{
-            throw new Exception("invalid request");
+            TransactionResponse response = new TransactionResponse(returnTxn.getTxnId(), returnTxn.getTransactionStatus());
+            return response;
+        } else if (returnTxn.getFine() != amount) {
+            throw new LessFineException("Check your fine amount");
+        } else{
+            throw new GeneralException("Invalid request");
         }
 
     }

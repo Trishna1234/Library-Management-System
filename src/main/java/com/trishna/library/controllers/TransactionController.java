@@ -2,6 +2,7 @@ package com.trishna.library.controllers;
 
 import com.trishna.library.dtos.InitiateTransactionRequest;
 import com.trishna.library.models.SecuredUser;
+import com.trishna.library.models.TransactionResponse;
 import com.trishna.library.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ public class TransactionController {
     TransactionService transactionService;
 
     @PostMapping("/transaction")
-    public String initiateTxn(@RequestBody @Valid InitiateTransactionRequest transactionRequest) throws Exception {
+    public TransactionResponse initiateTxn(@RequestBody @Valid InitiateTransactionRequest transactionRequest) throws Exception {
 
         // student id :
         // book id
@@ -33,9 +34,9 @@ public class TransactionController {
 
 
     @PostMapping("/transaction/payment")
-    public void makePayment(@RequestParam("amount") Integer amount,
+    public TransactionResponse makePayment(@RequestParam("amount") Integer amount,
                             @RequestParam("studentId") Integer studentId,
                             @RequestParam("transactionId") String txnId) throws Exception {
-        transactionService.payFine(amount, studentId, txnId);
+        return transactionService.payFine(amount, studentId, txnId);
     }
 }
