@@ -3,7 +3,6 @@ package com.trishna.library.dtos;
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.models.Student;
 import lombok.*;
-import org.springframework.security.core.userdetails.User;
 
 import javax.validation.constraints.NotNull;
 

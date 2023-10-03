@@ -1,12 +1,14 @@
 package com.trishna.library.controllers;
 
+
 import com.trishna.library.dtos.CreateStudentRequest;
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.GetStudentResponse;
 import com.trishna.library.dtos.UpdateRequest;
 import com.trishna.library.models.SecuredUser;
+import com.trishna.library.models.Student;
 import com.trishna.library.services.StudentService;
-import com.trishna.library.utils.Constants;
+import com.trishna.library.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +28,9 @@ public class StudentController {
 //    Creation of Student
     @PostMapping("/student/create")
     public void createStudent(@RequestBody @Valid CreateStudentRequest createStudentRequest){
+        Student student = studentService.findByEmail(createStudentRequest.getEmail());
+//        if(student == null)
+//            throw new StudentAlreadyExistsException("Student Already Exists");
         studentService.create(createStudentRequest.to());
     }
 

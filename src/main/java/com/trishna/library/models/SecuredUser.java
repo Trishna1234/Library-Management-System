@@ -1,7 +1,7 @@
 package com.trishna.library.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.trishna.library.utils.Constants;
+import com.trishna.library.util.Constants;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

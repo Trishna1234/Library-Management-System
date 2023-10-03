@@ -1,4 +1,4 @@
-package com.trishna.library.utils;
+package com.trishna.library.util;
 
 public class Constants {
 

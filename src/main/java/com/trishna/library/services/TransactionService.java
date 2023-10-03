@@ -1,7 +1,5 @@
 package com.trishna.library.services;
 
-import com.trishna.library.dtos.GetBookResponse;
-import com.trishna.library.dtos.GetStudentResponse;
 import com.trishna.library.dtos.InitiateTransactionRequest;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.TransactionRepository;
@@ -12,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 

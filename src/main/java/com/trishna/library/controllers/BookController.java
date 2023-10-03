@@ -4,7 +4,6 @@ import com.trishna.library.dtos.CreateBookRequest;
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.SearchBookRequest;
 import com.trishna.library.dtos.UpdateRequest;
-import com.trishna.library.models.Book;
 import com.trishna.library.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

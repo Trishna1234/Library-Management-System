@@ -10,7 +10,7 @@ import com.trishna.library.models.Transaction;
 import com.trishna.library.repositories.StudentCacheRepository;
 import com.trishna.library.repositories.StudentRepository;
 import com.trishna.library.repositories.TransactionRepository;
-import com.trishna.library.utils.Constants;
+import com.trishna.library.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +34,10 @@ public class StudentService {
         studentRepository.save(student);
 //        GetStudentResponse response = student1.to();
 //        return response;
+    }
+
+    public Student findByEmail(String email){
+        return studentRepository.findByEmail(email).orElse(null);
     }
 
     public GetStudentResponse find(Integer studentId) {

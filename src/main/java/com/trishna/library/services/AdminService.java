@@ -4,9 +4,8 @@ import com.trishna.library.dtos.GetAdminResponse;
 import com.trishna.library.dtos.UpdateRequest;
 import com.trishna.library.models.Admin;
 import com.trishna.library.models.SecuredUser;
-import com.trishna.library.models.Student;
 import com.trishna.library.repositories.AdminRepository;
-import com.trishna.library.utils.Constants;
+import com.trishna.library.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

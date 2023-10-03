@@ -2,7 +2,7 @@ package com.trishna.library.services;
 
 import com.trishna.library.models.SecuredUser;
 import com.trishna.library.repositories.UserRepository;
-import com.trishna.library.utils.Utils;
+import com.trishna.library.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
