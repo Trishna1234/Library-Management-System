@@ -1,9 +1,12 @@
 package com.trishna.library.services;
 
 import com.trishna.library.dtos.InitiateTransactionRequest;
+import com.trishna.library.exceptions.Book.BookNotAvailableException;
+import com.trishna.library.exceptions.Book.BookNotFoundException;
 import com.trishna.library.exceptions.GeneralException;
 import com.trishna.library.exceptions.transaction.LessFineException;
 import com.trishna.library.exceptions.transaction.TransactionNotFoundException;
+import com.trishna.library.exceptions.user.UserNotFindException;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,14 +72,15 @@ public class TransactionService {
         Admin admin = adminService.find(adminId);
         Book book = bookService.findById(request.getBookId());
 
-        if (student == null
-                || admin == null
-                || book == null
-                || student.getBookList().size() >= maxBooksAllowed) {
-            throw new GeneralException("Invalid request");
+        if (student == null){
+            throw new UserNotFindException("Please enter valid Student Id");
         } else if (book.getStudent() != null) {
-            throw new GeneralException("Book is not available");
-        }
+            throw new BookNotAvailableException("Book is not available");
+        }else if(student.getBookList().size() >= maxBooksAllowed){
+            throw new GeneralException("You have already issued 3 books. To issue any other book first return any other book");
+        } else if (book == null) {
+            throw new BookNotFoundException("Please enter valid Book Id");
+        }else if(admin == null) throw new GeneralException("Invalid Request");
 
         Transaction transaction = null;
 
