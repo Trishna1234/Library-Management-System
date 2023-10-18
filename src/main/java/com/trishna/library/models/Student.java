@@ -29,8 +29,8 @@ public class Student implements Serializable {
     private Date createdOn;
     @UpdateTimestamp
     private Date updatedOn;
-    @OneToMany(mappedBy = "student")
-    @JsonIgnoreProperties({"student"})
+    @ManyToMany
+    @JsonIgnoreProperties({"studentList"})
     private List<Book> bookList;
     @OneToMany(mappedBy = "student")
     @JsonIgnoreProperties({"student"})

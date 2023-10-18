@@ -38,6 +38,10 @@ public class StudentService {
 //        return response;
     }
 
+    public void updateBookList(Student student){
+        studentRepository.save(student);
+    }
+
     public Student findByEmail(String email){
         return studentRepository.findByEmail(email).orElse(null);
     }

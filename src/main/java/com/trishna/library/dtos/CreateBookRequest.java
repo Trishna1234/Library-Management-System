@@ -18,6 +18,8 @@ public class CreateBookRequest {
     private String name;
     @NotNull
     private Genre genre;
+    @NotNull
+    private Integer quantity;
     @NotBlank
     private String authorName;
     @NotBlank
@@ -26,6 +28,7 @@ public class CreateBookRequest {
         return Book.builder()
                 .name(this.name)
                 .genre(this.genre)
+                .quantity(this.quantity)
                 .author(
                         Author.builder()
                                 .name(this.authorName)

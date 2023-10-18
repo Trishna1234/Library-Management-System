@@ -21,9 +21,11 @@ public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true, nullable = false)
     private String name;
     @Enumerated(value = EnumType.STRING)
     private Genre genre;
+    private Integer quantity;
     @CreationTimestamp
     private Date createdOn;
     @UpdateTimestamp
@@ -34,10 +36,10 @@ public class Book implements Serializable {
     @JoinColumn
     @JsonIgnoreProperties({"bookList"})
     private Author author;
-    @ManyToOne
-    @JoinColumn
+    @ManyToMany(mappedBy = "bookList")
+//    @JoinColumn
     @JsonIgnoreProperties({"bookList"})
-    private Student student;
+    private List<Student> studentList;
     @OneToMany(mappedBy = "book")
     @JsonIgnoreProperties({"book"})
     private List<Transaction> transactionList;
@@ -47,12 +49,12 @@ public class Book implements Serializable {
                 .id(this.id)
                 .name(this.name)
                 .genre(this.genre)
+                .quantity(this.quantity)
                 .createdOn(this.createdOn)
                 .updatedOn((this.updatedOn))
                 .authorId(this.author.getId())
                 .authorEmail(this.author.getEmail())
                 .authorName(this.author.getName())
-                .status(this.status)
                 .build();
     }
 

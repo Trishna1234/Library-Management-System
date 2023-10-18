@@ -26,7 +26,7 @@ public class BookService {
         Author bookAuthor = book.getAuthor();
         Author savedAuthor = authorService.getOrCreate(bookAuthor);
         book.setAuthor(savedAuthor);
-        book.setStatus(BookStatus.AVAILABLE);
+//        book.setStatus(BookStatus.AVAILABLE);
         bookRepository.save(book);
     }
     public void update(Book book){
@@ -66,7 +66,7 @@ public class BookService {
         switch (searchKey){
             case "id": {
                 Optional<Book> book = bookRepository.findById(Integer.parseInt(searchValue));
-                Student student = book.get().getStudent();
+//                Student student = book.get().getStudent();
                 if(book.isPresent()){
                     return Arrays.asList(book.get().to());
                 }else{
