@@ -11,3 +11,6 @@ Here's a concise overview of the key features and components of a typical Librar
    The system keeps track of due dates, late fees, and the availability of items.
 5. A search functionality enables users to easily find and locate materials using filters such as title, author, genre.
 6. The system calculates and manages late fees and fines for overdue items. Librarians can review and update fine records.
+
+
+# POSTMAN COLLECTION IS ALSO ADDED FOR REFERENCE
