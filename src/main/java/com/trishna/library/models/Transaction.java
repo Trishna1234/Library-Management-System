@@ -41,4 +41,11 @@ public class Transaction implements Serializable {
     @JoinColumn
     @JsonIgnoreProperties("transactionList")
     private Admin admin;
+
+    public TransactionResponse to(){
+        return TransactionResponse.builder()
+                .transactionId(this.txnId)
+                .transactionStatus(this.transactionStatus)
+                .build();
+    }
 }

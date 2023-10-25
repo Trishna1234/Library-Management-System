@@ -2,6 +2,8 @@ package com.trishna.library.services;
 
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.UpdateRequest;
+import com.trishna.library.exceptions.Book.BookAlreadyExistsException;
+import com.trishna.library.exceptions.Book.BookNotFoundException;
 import com.trishna.library.exceptions.GeneralException;
 import com.trishna.library.models.*;
 import com.trishna.library.repositories.BookRepository;
@@ -23,6 +25,7 @@ public class BookService {
     @Autowired
     AuthorService authorService;
     public void createOrUpdate(Book book) {
+        if(bookRepository.findByName(book.getName()) != null) throw new BookAlreadyExistsException("Book is already registered in the system");
         Author bookAuthor = book.getAuthor();
         Author savedAuthor = authorService.getOrCreate(bookAuthor);
         book.setAuthor(savedAuthor);
@@ -106,9 +109,14 @@ public class BookService {
         String updateKey = request.getUpdateKey();
         String updateValue = request.getUpdateValue();
         Book retrievedBook = bookRepository.findById(bookId).orElse(null);
+        if(retrievedBook == null) throw new BookNotFoundException("Enter valid Book Id");
         switch (updateKey){
             case "name":{
                 retrievedBook.setName(updateValue);
+                break;
+            }
+            case "quantity":{
+                retrievedBook.setQuantity(Integer.valueOf(updateValue));
                 break;
             }
             case "genre": {
@@ -123,12 +131,11 @@ public class BookService {
 
     public void deleteBook(int bookId){
         Book book = bookRepository.findById(bookId).orElse(null);
-        if(book != null){
-            List<Transaction> list = transactionRepository.findByBook(book);
-            for (Transaction txn: list) {
-                txn.setBook(null);
-                transactionRepository.save(txn);
-            }
+        if(book == null) throw new BookNotFoundException("Enter valid Book Id");
+        List<Transaction> list = transactionRepository.findByBook(book);
+        for (Transaction txn: list) {
+            txn.setBook(null);
+            transactionRepository.save(txn);
         }
         bookRepository.deleteById(bookId);
     }

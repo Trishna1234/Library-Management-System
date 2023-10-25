@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -414,7 +415,7 @@ public class TransactionService {
             student.setBookList(bookList);
             Integer initialQuantity = book.getQuantity();
             book.setQuantity(initialQuantity + 1);
-            bookService.createOrUpdate(book);
+            bookService.update(book);
             studentService.updateBookList(student);
             transactionRepository.save(returnTxn);
             TransactionResponse response = new TransactionResponse(returnTxn.getTxnId(), returnTxn.getTransactionStatus());
@@ -425,6 +426,19 @@ public class TransactionService {
             throw new GeneralException("Invalid request");
         }
 
+    }
+
+    public List<TransactionResponse> showPendingTransaction(Integer studentId){
+        Student student = studentService.findStudent(studentId);
+        List<Transaction> transactionList = transactionRepository.findByStudentAndTransactionStatus(student, TransactionStatus.PENDING);
+        List<TransactionResponse> transactionResponses = new ArrayList<>();
+        if(transactionList.isEmpty()) throw new GeneralException("No transaction is there");
+        for (Transaction txn:
+             transactionList) {
+            transactionResponses.add(txn.to());
+        }
+        if(transactionResponses.isEmpty()) throw new GeneralException("No pending transaction available");
+        else return transactionResponses;
     }
 
     public void deleteTransaction(Student student){

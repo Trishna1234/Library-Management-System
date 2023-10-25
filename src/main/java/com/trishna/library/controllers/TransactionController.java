@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class TransactionController {
@@ -35,8 +36,24 @@ public class TransactionController {
 
     @PostMapping("/transaction/payment")
     public TransactionResponse makePayment(@RequestParam("amount") Integer amount,
-                            @RequestParam("studentId") Integer studentId,
                             @RequestParam("transactionId") String txnId) throws Exception {
-        return transactionService.payFine(amount, studentId, txnId);
+        return transactionService.payFine(amount, getStudentId(), txnId);
+    }
+
+    @GetMapping("/transaction/pending")
+    public List<TransactionResponse> showPendingTxn(){
+        return transactionService.showPendingTransaction(getStudentId());
+    }
+
+    @GetMapping("/transaction/show-fine")
+    public Integer showFine(@RequestParam("txnId") String txnId,
+                            @RequestParam("bookId") Integer bookId){
+        return transactionService.showFine(txnId, bookId);
+    }
+
+    private Integer getStudentId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecuredUser securedUser = (SecuredUser) authentication.getPrincipal();
+        return securedUser.getStudent().getId();
     }
 }

@@ -1,5 +1,6 @@
 package com.trishna.library.exceptions;
 
+import com.trishna.library.exceptions.Book.BookAlreadyExistsException;
 import com.trishna.library.exceptions.Book.BookNotAvailableException;
 import com.trishna.library.exceptions.Book.BookNotFoundException;
 import com.trishna.library.exceptions.transaction.LessFineException;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<ErrorResponse> bookNotFound(BookNotFoundException bookNotFoundException){
         ErrorResponse response = new ErrorResponse(bookNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(BookAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> bookAlreadyExists(BookAlreadyExistsException bookAlreadyExistsException){
+        ErrorResponse response = new ErrorResponse(bookAlreadyExistsException.getMessage(), HttpStatus.CONFLICT);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

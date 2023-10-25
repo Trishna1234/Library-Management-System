@@ -1,9 +1,6 @@
 package com.trishna.library.repositories;
 
-import com.trishna.library.models.Book;
-import com.trishna.library.models.Student;
-import com.trishna.library.models.Transaction;
-import com.trishna.library.models.TransactionType;
+import com.trishna.library.models.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,6 +11,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     Transaction findTopByStudentAndBookAndTransactionTypeOrderByIdDesc(Student student, Book book, TransactionType transactionType);
 
     Transaction findByTxnId(String txnId);
+
+    List<Transaction> findByStudentAndTransactionStatus(Student student, TransactionStatus transactionStatus);
 
     List<Transaction> findByStudent(Student student);
 
