@@ -14,10 +14,10 @@ Here's a concise overview of the key features and components of a typical Librar
 
 
 #### Redis Configuration: 
-###### If you do not have redis in your system ,then there will be error in accessing some APIs.
-###### As part of configuration please ensure you have Redis in your system and also start the server before accessing the APIs.
-###### Command for starting redis server : sudo service redis-server start
-###### For monitoring the cache hit two commands ->
+##### If you do not have redis in your system ,then there will be error in accessing some APIs.
+##### As part of configuration please ensure you have Redis in your system and also start the server before accessing the APIs.
+##### Command for starting redis server : sudo service redis-server start
+##### For monitoring the cache hit two commands ->
       1. redis-cli
       2. monitor
 
