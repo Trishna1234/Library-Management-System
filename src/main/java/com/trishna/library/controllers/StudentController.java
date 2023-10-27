@@ -78,7 +78,7 @@ public class StudentController {
         boolean isCalledByAdmin = false;
         for(GrantedAuthority grantedAuthority : securedUser.getAuthorities()){
             String[] authorities = grantedAuthority.getAuthority().split(Constants.DELIMITER);
-            isCalledByAdmin = Arrays.stream(authorities).anyMatch(x -> Constants.STUDENT_INFO_AUTHORITY.equals(x));
+            isCalledByAdmin = Arrays.stream(authorities).anyMatch(Constants.STUDENT_INFO_AUTHORITY::equals);
             if(isCalledByAdmin) break;
         }
         return isCalledByAdmin;

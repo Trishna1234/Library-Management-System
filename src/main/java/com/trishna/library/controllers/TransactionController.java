@@ -2,7 +2,7 @@ package com.trishna.library.controllers;
 
 import com.trishna.library.dtos.InitiateTransactionRequest;
 import com.trishna.library.models.SecuredUser;
-import com.trishna.library.models.TransactionResponse;
+import com.trishna.library.dtos.TransactionResponse;
 import com.trishna.library.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

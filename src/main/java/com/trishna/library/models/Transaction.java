@@ -1,6 +1,9 @@
 package com.trishna.library.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.trishna.library.dtos.TransactionResponse;
+import com.trishna.library.models.utils.TransactionStatus;
+import com.trishna.library.models.utils.TransactionType;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

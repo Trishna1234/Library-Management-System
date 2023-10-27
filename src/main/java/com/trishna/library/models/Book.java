@@ -2,6 +2,7 @@ package com.trishna.library.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.trishna.library.dtos.GetBookResponse;
+import com.trishna.library.models.utils.Genre;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,12 +31,8 @@ public class Book implements Serializable {
     private Date createdOn;
     @UpdateTimestamp
     private Date updatedOn;
-    @Enumerated(EnumType.STRING)
-    private BookStatus status;
-    @ManyToOne
-    @JoinColumn
-    @JsonIgnoreProperties({"bookList"})
-    private Author author;
+    @ManyToMany
+    private List<Author> authorList;
     @ManyToMany(mappedBy = "bookList")
 //    @JoinColumn
     @JsonIgnoreProperties({"bookList"})
@@ -52,9 +49,6 @@ public class Book implements Serializable {
                 .quantity(this.quantity)
                 .createdOn(this.createdOn)
                 .updatedOn((this.updatedOn))
-                .authorId(this.author.getId())
-                .authorEmail(this.author.getEmail())
-                .authorName(this.author.getName())
                 .build();
     }
 

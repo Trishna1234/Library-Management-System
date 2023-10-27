@@ -1,6 +1,6 @@
 package com.trishna.library.dtos;
 
-import com.trishna.library.models.TransactionType;
+import com.trishna.library.models.utils.TransactionType;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

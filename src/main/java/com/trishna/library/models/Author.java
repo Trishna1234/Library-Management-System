@@ -1,5 +1,6 @@
 package com.trishna.library.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,7 +25,7 @@ public class Author implements Serializable {
     private String email;
     @CreationTimestamp
     private Date createdOn;
-    @OneToMany(mappedBy = "author")
-    @JsonIgnoreProperties({"author"})
+    @OneToMany(mappedBy = "authorList")
+    @JsonIgnore
     private List<Book> bookList;
 }

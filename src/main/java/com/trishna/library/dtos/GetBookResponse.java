@@ -1,9 +1,7 @@
 package com.trishna.library.dtos;
 
-import com.trishna.library.models.Author;
 import com.trishna.library.models.Book;
-import com.trishna.library.models.BookStatus;
-import com.trishna.library.models.Genre;
+import com.trishna.library.models.utils.Genre;
 import lombok.*;
 
 import java.util.Date;
@@ -20,9 +18,6 @@ public class GetBookResponse {
     private Integer quantity;
     private Date createdOn;
     private Date updatedOn;
-    private Integer authorId;
-    private String authorName;
-    private String authorEmail;
 
     public Book to(){
         return Book.builder()
@@ -32,13 +27,6 @@ public class GetBookResponse {
                 .quantity(this.quantity)
                 .createdOn(this.createdOn)
                 .updatedOn(this.updatedOn)
-                .author(
-                        Author.builder()
-                                .id(this.authorId)
-                                .name(this.authorName)
-                                .email(this.authorEmail)
-                                .build()
-                )
                 .build();
     }
 }

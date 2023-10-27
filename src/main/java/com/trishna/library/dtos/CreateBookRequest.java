@@ -2,11 +2,12 @@ package com.trishna.library.dtos;
 
 import com.trishna.library.models.Author;
 import com.trishna.library.models.Book;
-import com.trishna.library.models.Genre;
+import com.trishna.library.models.utils.Genre;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,21 +21,13 @@ public class CreateBookRequest {
     private Genre genre;
     @NotNull
     private Integer quantity;
-    @NotBlank
-    private String authorName;
-    @NotBlank
-    private String authorEmail;
+    private List<Author> authorList;
     public Book to(){
         return Book.builder()
                 .name(this.name)
                 .genre(this.genre)
                 .quantity(this.quantity)
-                .author(
-                        Author.builder()
-                                .name(this.authorName)
-                                .email(this.authorEmail)
-                                .build()
-                )
+                .authorList(this.authorList)
                 .build();
     }
 }

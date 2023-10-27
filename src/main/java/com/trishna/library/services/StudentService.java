@@ -34,8 +34,6 @@ public class StudentService {
         securedUser = userService.save(securedUser, Constants.STUDENT_USER);
         student.setSecuredUser(securedUser);
         studentRepository.save(student);
-//        GetStudentResponse response = student1.to();
-//        return response;
     }
 
     public void updateBookList(Student student){

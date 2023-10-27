@@ -7,7 +7,7 @@ import com.trishna.library.exceptions.transaction.LessFineException;
 import com.trishna.library.exceptions.transaction.TransactionNotFoundException;
 import com.trishna.library.exceptions.user.UserAlreadyExistsException;
 import com.trishna.library.exceptions.user.UserNotFindException;
-import com.trishna.library.models.ErrorResponse;
+import com.trishna.library.dtos.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

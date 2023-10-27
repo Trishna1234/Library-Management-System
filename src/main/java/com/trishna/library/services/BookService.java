@@ -2,10 +2,10 @@ package com.trishna.library.services;
 
 import com.trishna.library.dtos.GetBookResponse;
 import com.trishna.library.dtos.UpdateRequest;
-import com.trishna.library.exceptions.Book.BookAlreadyExistsException;
 import com.trishna.library.exceptions.Book.BookNotFoundException;
 import com.trishna.library.exceptions.GeneralException;
 import com.trishna.library.models.*;
+import com.trishna.library.models.utils.Genre;
 import com.trishna.library.repositories.BookRepository;
 import com.trishna.library.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +24,18 @@ public class BookService {
     TransactionRepository transactionRepository;
     @Autowired
     AuthorService authorService;
-    public void createOrUpdate(Book book) {
-        if(bookRepository.findByName(book.getName()) != null) throw new BookAlreadyExistsException("Book is already registered in the system");
-        Author bookAuthor = book.getAuthor();
-        Author savedAuthor = authorService.getOrCreate(bookAuthor);
-        book.setAuthor(savedAuthor);
-//        book.setStatus(BookStatus.AVAILABLE);
+
+
+    public void createOrUpdate(Book book){
+        List<Author> bookAuthor = book.getAuthorList();
+        List<Author> retrievedAuthor = new ArrayList<>();
+        for(Author author : bookAuthor){
+            retrievedAuthor.add(authorService.getOrCreate(author));
+        }
+        book.setAuthorList(retrievedAuthor);
         bookRepository.save(book);
     }
     public void update(Book book){
-//        book.setStatus(BookStatus.AVAILABLE);
         bookRepository.save(book);
     }
 
@@ -44,26 +46,6 @@ public class BookService {
         else return null;
     }
 
-//    public List<Book> find(String searchKey, String searchValue) throws Exception {
-//        switch (searchKey){
-//            case "id": {
-//                Optional<Book> book = bookRepository.findById(Integer.parseInt(searchValue));
-//                if(book.isPresent()){
-//                    return Arrays.asList(book.get());
-//                }else{
-//                    return new ArrayList<>();
-//                }
-//            }
-//            case "genre":
-//                return bookRepository.findByGenre(Genre.valueOf(searchValue));
-//            case "author_name":
-//                return bookRepository.findByAuthorName(searchValue);
-//            case "book_name":
-//                return bookRepository.findByName(searchValue);
-//            default:
-//                throw new Exception("Search key not valid " + searchKey);
-//        }
-//    }
 
     public List<GetBookResponse> findBook(String searchKey, String searchValue) throws Exception {
         switch (searchKey){
@@ -85,7 +67,7 @@ public class BookService {
                 return result;
             }
             case "author_name":{
-                List<Book> list = bookRepository.findByAuthorName(searchValue);
+                List<Book> list = authorService.findBookByName(searchValue);
                 List<GetBookResponse> result = new ArrayList<>();
                 for(int i=0;i< list.size();i++){
                     result.add(list.get(i).to());

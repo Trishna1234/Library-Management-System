@@ -1,4 +1,4 @@
-package com.trishna.library.models;
+package com.trishna.library.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

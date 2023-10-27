@@ -1,5 +1,6 @@
-package com.trishna.library.models;
+package com.trishna.library.dtos;
 
+import com.trishna.library.models.utils.TransactionStatus;
 import lombok.*;
 
 @AllArgsConstructor

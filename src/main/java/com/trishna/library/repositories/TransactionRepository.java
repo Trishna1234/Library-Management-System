@@ -1,6 +1,8 @@
 package com.trishna.library.repositories;
 
 import com.trishna.library.models.*;
+import com.trishna.library.models.utils.TransactionStatus;
+import com.trishna.library.models.utils.TransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
